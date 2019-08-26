@@ -13,10 +13,15 @@ struct NetworkManager {
     static func fetchWeatherForLocation(_ location: Location, completion: @escaping (Weather) -> (Void)) {
         
         let urlString = "api.openweathermap.org/data/2.5/weather?lat=\(location.latitude)&lon=\(location.longitude)&APPID=32ef9ca445e5ec4f81a93660ee90ac8a"
+//        let urlString = "http://api.openweathermap.org/data/2.5/weather?lat=46.4825&lon=30.7233&APPID=32ef9ca445e5ec4f81a93660ee90ac8a"
         guard let url = URL(string: urlString) else { return }
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let data = data else { return }
-            guard error == nil else { return }
+            guard let data = data else {
+                print("smth wrong with data")
+                return }
+            guard error == nil else {
+                print("\(error?.localizedDescription)")
+                return }
             
             do {
                 let json = try JSONDecoder().decode(Weather.self, from: data)
